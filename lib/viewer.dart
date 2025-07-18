@@ -35,7 +35,6 @@ class _IntensityGraphState extends State<IntensityGraph> {
         if (dataList != null && dataList.isNotEmpty) {
           intervals = dataList.map((entry) {
             final intensity = entry['intensity'];
-            final index =entry['index'];
             return IntervalData(
               from: DateTime.parse(entry['from']),
               actual: intensity['actual'].toDouble(),
@@ -51,18 +50,21 @@ class _IntensityGraphState extends State<IntensityGraph> {
           setState(() {
             errorMessage = "No data available for ${widget.dateString}";
             isLoading = false;
+            print("No available data");
           });
         }
       } else {
         setState(() {
           errorMessage = "Failed to load data: ${response.statusCode}";
           isLoading = false;
+          print( "Failed to load data: ${response.statusCode}");
         });
       }
     } catch (e) {
       setState(() {
         errorMessage = "Error: $e";
         isLoading = false;
+         print('Error occurred: $e');
       });
     }
   }
@@ -70,7 +72,7 @@ class _IntensityGraphState extends State<IntensityGraph> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) return const Center(child: CircularProgressIndicator());
-    if (errorMessage != null) return Center(child: Text(errorMessage!, style: const TextStyle(color: Colors.red)));
+    if (errorMessage != null) return Center(child: Text("An error has occured, please try again or contact support.", style: const TextStyle(color: Colors.red)));
 
     final maxActual = intervals.map((e) => e.actual).reduce((a, b) => a > b ? a : b);
 
@@ -78,7 +80,23 @@ class _IntensityGraphState extends State<IntensityGraph> {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          Text('Carbon Intensity for ${widget.dateString}', style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+          Center(
+          child:Container(
+          decoration: BoxDecoration(
+             boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.5), 
+                spreadRadius: 5,
+                blurRadius: 15,
+                offset: Offset(0, 0),
+              ),
+            ],
+            color: const Color.fromARGB(170, 0, 0, 0),  
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Center(
+            child:Text('Carbon Intensity for ${widget.dateString}', style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold,color: Color.fromARGB(255, 242, 246, 232))),
+          ),),),
           const SizedBox(height: 12),
           SizedBox(
             height: 200,
@@ -92,13 +110,13 @@ class _IntensityGraphState extends State<IntensityGraph> {
                   final timeLabel = "${interval.from.hour.toString().padLeft(2, '0')}:${interval.from.minute.toString().padLeft(2, '0')}";
 
                   return Container(
-                    width: 40, // fixed width per bar to keep spacing consistent
+                    width: 40,
                     margin: const EdgeInsets.symmetric(horizontal: 2),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         // Number on top of the bar
-                        Text(interval.actual.toStringAsFixed(0), style: const TextStyle(fontSize: 10)),
+                        Text(interval.actual.toStringAsFixed(0), style: const TextStyle(fontSize: 10,fontWeight: FontWeight.bold, color: Color.fromARGB(255, 242, 246, 232))),
                         const SizedBox(height: 4),
                         // Bar
                         Container(
@@ -106,7 +124,7 @@ class _IntensityGraphState extends State<IntensityGraph> {
                           color: getBorderColor(interval.index),
                         ),
                         const SizedBox(height: 4),
-                        if (index % 4 == 0) Text(timeLabel, style: const TextStyle(fontSize: 10)) else const SizedBox(height: 14),
+                        if (index % 4 == 0) Text(timeLabel, style: const TextStyle(fontSize: 10,fontWeight: FontWeight.bold, color: Color.fromARGB(255, 242, 246, 232))) else const SizedBox(height: 14),
                       ],
                     ),
                   );
