@@ -77,11 +77,12 @@ class _IntensityGraphState extends State<IntensityGraph> {
     final maxActual = intervals.map((e) => e.actual).reduce((a, b) => a > b ? a : b);
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(30),
       child: Column(
         children: [
           Center(
           child:Container(
+            padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
              boxShadow: [
               BoxShadow(
@@ -95,7 +96,7 @@ class _IntensityGraphState extends State<IntensityGraph> {
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: Center(
-            child:Text('Carbon Intensity for ${widget.dateString}', style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold,color: Color.fromARGB(255, 242, 246, 232))),
+            child:Text('Carbon Intensity for ${widget.dateString}',textAlign: TextAlign.center, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold,color: Color.fromARGB(255, 242, 246, 232))),
           ),),),
           const SizedBox(height: 12),
           SizedBox(
