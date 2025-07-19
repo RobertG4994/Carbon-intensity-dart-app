@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'viewer.dart';
 import 'color.dart';
 import 'package:intl/intl.dart';
+import 'package:animated_background/animated_background.dart';
 void main() {
   runApp(const MainApp());
 }
@@ -25,7 +26,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   String index = "Loading...";
   String forecast = "Loading...";
   String actual = "Loading...";
@@ -77,8 +78,29 @@ class _HomePageState extends State<HomePage> {
    @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(backgroundColor:Color.fromARGB(170, 0, 0, 0),),
-    body: Container(
+      extendBodyBehindAppBar: true,
+   
+    body: Stack(
+      children: [
+        AnimatedBackground(
+          behaviour:RandomParticleBehaviour(
+            options: const ParticleOptions(
+              spawnMaxRadius: 50,
+              spawnMinSpeed: 10,
+              particleCount: 100,
+              spawnMaxSpeed: 15,
+              minOpacity:  0.1,
+              spawnOpacity: 0.4,
+              baseColor: Color.fromARGB(170, 0, 0, 0)
+            ),
+
+            ),
+          
+          vsync: this,
+          child: Container(),
+          ),
+        
+        Container(
    color: const Color.fromARGB(170, 0, 0, 0),
     child:Column(
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -103,8 +125,8 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
              Container(
-              child:Text('Current Carbon Intensity ', style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 242, 246, 232))),
-              padding: const EdgeInsets.all(20)),
+              padding: const EdgeInsets.all(20),
+              child:Text('Current Carbon Intensity ', style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 242, 246, 232)))),
               Text('Forecast', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold,color: Color.fromARGB(255, 242, 246, 232))),
               Text('$forecast, gCO2/kWh', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 242, 246, 232))),
               Text('Actual', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold,color: Color.fromARGB(255, 242, 246, 232))),
@@ -124,8 +146,8 @@ class _HomePageState extends State<HomePage> {
         ),
       ],
     ),
-  )
-  );
+  )]   
+  ));
 }
 }
 //using today's date does not work
