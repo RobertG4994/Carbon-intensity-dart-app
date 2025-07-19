@@ -77,7 +77,7 @@ class _IntensityGraphState extends State<IntensityGraph> {
     final maxActual = intervals.map((e) => e.actual).reduce((a, b) => a > b ? a : b);
 
     return Padding(
-      padding: const EdgeInsets.all(30),
+      padding: const EdgeInsets.all(20),
       child: Column(
         children: [
           Center(
